@@ -7,7 +7,8 @@ import torch
 import torchvision.transforms as transforms
 import os
 
-path_label = "dataset/train_labels.csv"
+path_labels = "dataset/train_labels.csv"
+path_write_train = "dataset/train_data_labels.txt"
 
 
 def get_lables(path):                          #获取训练图片数据的labels
@@ -16,18 +17,6 @@ def get_lables(path):                          #获取训练图片数据的label
     labels_list = data['label']
     dict_labels = dict(zip(id_list, labels_list))
     return dict_labels                         #返回的是dict_labels 的映射关系
-
-
-#图片的读取
-def read_img(path):
-    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-    data = torchvision.datasets.ImageFolder(root=path, transform=transform)
-    loader = torch.utils.data.DataLoader(data, batch_size=128, shuffle=True, num_workers=2)
-
-    dataiter = iter(loader)
-    images, labels = dataiter.next()
-
-    return images, labels
 
 
 def write_image_labels(path_write, path_labels):        #注意pytorch数据的加载方式，我们需要写成  “****.png 1” 这样的格式
@@ -53,7 +42,6 @@ def write_image_labels(path_write, path_labels):        #注意pytorch数据的�
 # print(data[id_t])
 # path_image = "dataset/train"
 # read_img(path_image)
-path_labels="dataset/train_labels.csv"
-path_write="dataset/train_data_labels.txt"
+
 write_image_labels(path_write, path_labels)
 
