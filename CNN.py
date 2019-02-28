@@ -10,7 +10,7 @@ import numpy as np
 
 # Hyper parameters
 num_epochs = 5
-num_classes = 10
+num_classes = 2
 batch_size = 100
 learning_rate = 0.001
 
@@ -44,7 +44,7 @@ class DataSplit():
 
 
 class MyDataset(Dataset):  #重写dateset的相关类
-    def __init__(self,imgs, transform=None, target_transform=None, loader=default_loader):
+    def __init__(self, imgs, transform=None, target_transform=None, loader=default_loader):
         self.imgs = imgs
         self.transform = transform
         self.target_transform = target_transform
@@ -55,7 +55,7 @@ class MyDataset(Dataset):  #重写dateset的相关类
         img = self.loader(fn)
         if self.transform is not None:
             img = self.transform(img)
-        return img,label
+        return img, label
 
     def __len__(self):
         return len(self.imgs)
@@ -81,12 +81,11 @@ def show_batch(imgs):
 #         plt.axis('off')
 #         plt.show()
 
-
 class ConvNet(nn.Module):
-    def __init__(self, num_classes=10):
+    def __init__(self, num_classes=num_classes):
         super(ConvNet, self).__init__()
         self.layer1 = nn.Sequential(
-            nn.Conv2d(1, 16, kernel_size=5, stride=1, padding=2),
+            nn.Conv2d(in_channels=3, out_channels=16, kernel_size=5, stride=1, padding=2),
             nn.BatchNorm2d(16),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
@@ -95,9 +94,10 @@ class ConvNet(nn.Module):
             nn.BatchNorm2d(32),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
-        self.fc = nn.Linear(7 * 7 * 32, num_classes)
+        self.fc = nn.Linear(24 * 24 * 32, num_classes)
 
     def forward(self, x):
+        # x = x.view(x.size(0), -1)
         out = self.layer1(x)
         out = self.layer2(out)
         out = out.reshape(out.size(0), -1)
