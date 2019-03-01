@@ -6,13 +6,13 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
 
-# device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 # Hyper parameters
-num_epochs = 5
+num_epochs = 10
 num_classes = 2
 batch_size = 100
-learning_rate = 0.001
+learning_rate = 0.0005
 
 
 def default_loader(path):
@@ -41,6 +41,8 @@ class DataSplit():
                 test_image.append(imgs[rand_list[i]])
         self.train_imgs = train_image
         self.test_imgs = test_image
+        self.train_imgs_length = train_image.__len__()
+        self.test_imgs_length = test_image.__len__()
 
 
 class MyDataset(Dataset):  #重写dateset的相关类
@@ -105,8 +107,8 @@ class ConvNet(nn.Module):
         return out
 
 
-# model = ConvNet(num_classes).to(device)
-model = ConvNet(num_classes)
+model = ConvNet(num_classes).to(device)
+#model = ConvNet(num_classes)
 # Loss and optimizer
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -115,11 +117,11 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 total_step = len(train_loader)
 for epoch in range(num_epochs):
     for i, (images, labels) in enumerate(train_loader):
-        # images = images.to(device)
-        # labels = labels.to(device)
+        images = images.to(device)
+        labels = labels.to(device)
 
-        images = images
-        labels = labels
+        #images = images
+        #labels = labels
 
         # Forward pass
         outputs = model(images)
@@ -141,16 +143,16 @@ with torch.no_grad():
     correct = 0
     total = 0
     for images, labels in test_loader:
-        # images = images.to(device)
-        # labels = labels.to(device)
-        images = images
-        labels = labels
+        images = images.to(device)
+        labels = labels.to(device)
+        #images = images
+        #labels = labels
         outputs = model(images)
         _, predicted = torch.max(outputs.data, 1)
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-    print('Test Accuracy of the model on the 10000 test images: {} %'.format(100 * correct / total))
+    print('Test Accuracy of the model on the {} test images: {} %'.format(imgs.test_imgs_length,100 * correct / total))
 
 # Save the model checkpoint
 torch.save(model.state_dict(), 'model.ckpt')

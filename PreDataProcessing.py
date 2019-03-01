@@ -8,7 +8,7 @@ import torchvision.transforms as transforms
 import os
 
 path_labels = "dataset/train_labels.csv"
-path_write_train = "dataset/train_data_labels.txt"
+path_write = "dataset/train_data_labels.txt"
 
 
 def get_lables(path):                          #获取训练图片数据的labels
