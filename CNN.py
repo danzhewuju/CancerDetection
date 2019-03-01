@@ -151,7 +151,7 @@ with torch.no_grad():
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-    print('Test Accuracy of the model on the {} test images: {} %'.format(imgs.test_imgs_length,100 * correct / total))
+    print('Test Accuracy of the model on the {} test images: {} %'.format(imgs.test_imgs_length, 100 * correct / total))
 
 # Save the model checkpoint
-torch.save(model.state_dict(), 'model.ckpt')
+torch.save(model.state_dict(), 'model.ckpt')  #只保留相关的参数，保留了所有的参数

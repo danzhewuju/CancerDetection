@@ -14,7 +14,7 @@ Pandas pip install pandas
 
 1.Running ./PreDataProcessing.py. You will get  ./dataset/train_data_labels.txt
 
-2.Running ./CNN.py. 
+2.Running ./CNN.py. ``
 
 
 
