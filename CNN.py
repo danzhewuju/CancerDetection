@@ -96,10 +96,9 @@ class ConvNet(nn.Module):
             nn.BatchNorm2d(32),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2))
-        self.fc = nn.Linear(24 * 24 * 32, num_classes)
+        self.fc = nn.Linear(24 * 24 * 32, num_classes)  #注意参数的调整，神经网络的参数要保持一致
 
     def forward(self, x):
-        # x = x.view(x.size(0), -1)
         out = self.layer1(x)
         out = self.layer2(out)
         out = out.reshape(out.size(0), -1)
