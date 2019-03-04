@@ -21,6 +21,7 @@ import torch.nn.functional as F
 from PIL import Image
 from submit_result import write_submit
 from CNNFramework import *
+
 # device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 test_path = "dataset/test"  # 验证集的位置

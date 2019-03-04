@@ -114,6 +114,7 @@ for epoch in range(num_epochs):
                   .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
 
 # Test the model
+Acc = 0.0
 model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
 with torch.no_grad():
     correct = 0
@@ -129,8 +130,9 @@ with torch.no_grad():
         correct += (predicted == labels).sum().item()
 
     print('Test Accuracy of the model on the {} test images: {} %'.format(imgs.test_imgs_length, 100 * correct / total))
+    Acc = 100 * correct / total
 
 # Save the model checkpoint
 timestamp = str(int(time.time()))
-name = str("./model/model-{}-{}.ckpt".format(learning_rate, timestamp))
+name = str("./model/model-{}-{}-{:.4f}.ckpt".format(learning_rate, timestamp, Acc))
 torch.save(model.state_dict(), name)
