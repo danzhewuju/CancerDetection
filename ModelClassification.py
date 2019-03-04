@@ -115,11 +115,11 @@ def run():
             _, predicted = torch.max(outputs.data, 1)
             print(predicted)
             for r in predicted:
-                results.append(r)
+                results.append(r.cpu().numpy())
     fp = open(write_path, 'w', encoding="UTF-8")
     fp.write("id,label\n")
-    for index in names.__len__():
-        result = names[index] + "," + str(result[index])+"\n"
+    for index in range(names.__len__()):
+        result = names[index] + "," + str(results[index])+"\n"
         fp.write(result)
     fp.close()
     print("Successfully Write!!!")
