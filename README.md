@@ -1,7 +1,7 @@
 # CancerDetection
 Cancer Detection Project
 
-#Environments
+# Environments
 
 Python3.6
 
@@ -17,7 +17,7 @@ Pandas
 
 pip install pandas
 
-#Running
+# Running
 
 1.Running ./PreDataProcessing.py. You will get ./dataset/train_data_labels.txt
 
