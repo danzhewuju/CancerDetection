@@ -5,24 +5,23 @@ from torch.utils.data import Dataset, DataLoader
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
+import time
+from CNNFramework import *
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
+
 # Hyper parameters
-num_epochs = 10
-num_classes = 2
-batch_size = 100
-learning_rate = 0.001
 
 
 def default_loader(path):
     return Image.open(path).convert('RGB')
 
 
-#数据集的划分，将数据划分为训练集以及测试集
+# 数据集的划分，将数据划分为训练集以及测试集
 class DataSplit():
     def __init__(self, path, train_size):
-        fh = open(path, 'r')   #读取全部的文件
+        fh = open(path, 'r')  # 读取全部的文件
         imgs = []
         for line in fh:
             line = line.strip('\n')
@@ -31,7 +30,7 @@ class DataSplit():
             imgs.append((words[0], int(words[1])))
         length = imgs.__len__()
         flag = int(length * train_size)  # 前面的flag作为训练集
-        rand_list = np.random.randint(0, length, length) #获得随机数组
+        rand_list = np.random.randint(0, length, length)  # 获得随机数组
         train_image = []
         test_image = []
         for i in range(length):
@@ -45,7 +44,7 @@ class DataSplit():
         self.test_imgs_length = test_image.__len__()
 
 
-class MyDataset(Dataset):  #重写dateset的相关类
+class MyDataset(Dataset):  # 重写dateset的相关类
     def __init__(self, imgs, transform=None, target_transform=None, loader=default_loader):
         self.imgs = imgs
         self.transform = transform
@@ -63,9 +62,9 @@ class MyDataset(Dataset):  #重写dateset的相关类
         return len(self.imgs)
 
 
-imgs = DataSplit(path='dataset/train_data_labels.txt', train_size=0.8)
-train_data = MyDataset(imgs.train_imgs, transform=transforms.ToTensor())  #作为训练集
-test_data = MyDataset(imgs.test_imgs, transform=transforms.ToTensor())    # 作为测试集
+imgs = DataSplit(path='./dataset/train_data_labels.txt', train_size=0.8)
+train_data = MyDataset(imgs.train_imgs, transform=transforms.ToTensor())  # 作为训练集
+test_data = MyDataset(imgs.test_imgs, transform=transforms.ToTensor())  # 作为测试集
 train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=True)
 
@@ -83,31 +82,9 @@ def show_batch(imgs):
 #         plt.axis('off')
 #         plt.show()
 
-class ConvNet(nn.Module):
-    def __init__(self, num_classes=num_classes):
-        super(ConvNet, self).__init__()
-        self.layer1 = nn.Sequential(
-            nn.Conv2d(in_channels=3, out_channels=16, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(16),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2))
-        self.layer2 = nn.Sequential(
-            nn.Conv2d(16, 32, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(32),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2))
-        self.fc = nn.Linear(24 * 24 * 32, num_classes)  #注意参数的调整，神经网络的参数要保持一致
-
-    def forward(self, x):
-        out = self.layer1(x)
-        out = self.layer2(out)
-        out = out.reshape(out.size(0), -1)
-        out = self.fc(out)
-        return out
-
 
 model = ConvNet(num_classes).to(device)
-#model = ConvNet(num_classes)
+# model = ConvNet(num_classes)
 # Loss and optimizer
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -119,8 +96,8 @@ for epoch in range(num_epochs):
         images = images.to(device)
         labels = labels.to(device)
 
-        #images = images
-        #labels = labels
+        # images = images
+        # labels = labels
 
         # Forward pass
         outputs = model(images)
@@ -144,8 +121,8 @@ with torch.no_grad():
     for images, labels in test_loader:
         images = images.to(device)
         labels = labels.to(device)
-        #images = images
-        #labels = labels
+        # images = images
+        # labels = labels
         outputs = model(images)
         _, predicted = torch.max(outputs.data, 1)
         total += labels.size(0)
@@ -154,4 +131,6 @@ with torch.no_grad():
     print('Test Accuracy of the model on the {} test images: {} %'.format(imgs.test_imgs_length, 100 * correct / total))
 
 # Save the model checkpoint
-torch.save(model.state_dict(), 'model.ckpt')  #只保留相关的参数，保留了所有的参数
+timestamp = str(int(time.time()))
+name = str("./model/model-{}-{}.ckpt".format(learning_rate, timestamp))
+torch.save(model.state_dict(), name)
