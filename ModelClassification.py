@@ -1,23 +1,12 @@
 #!/usr/bin/python3
 '''
-主要是加载模型来验证测试集?
+主要是加载模型来验证测试集
 '''
 import torch
 import glob
-import os
 from torch.utils.data import DataLoader, Dataset
-import torchvision.transforms as transforms
-import torch.nn as nn
-import torch.optim as optim
-from torch.optim import lr_scheduler
-from torch.autograd import Variable
-import torchvision
 from torchvision import datasets, models, transforms
-import time
 import os
-from PIL import Image
-import sys
-import torch.nn.functional as F
 from PIL import Image
 from submit_result import write_submit
 from CNNFramework import *
@@ -25,35 +14,13 @@ from CNNFramework import *
 # device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 test_path = "dataset/test"  # 验证集的位置
-mode_path = "./model/model.ckpt"  # 训练好的模型的文件位置
+mode_path = "model/model.ckpt"  # 训练好的模型的文件位置
 save_path = "./dataset/submit.csv"  # 生成需要提交的文件
 write_path = "./result/result.csv"
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 
 # ----------------------------------网络结构特征---------------------------------------
-class ConvNet(nn.Module):
-    def __init__(self, num_classes=num_classes):
-        super(ConvNet, self).__init__()
-        self.layer1 = nn.Sequential(
-            nn.Conv2d(in_channels=3, out_channels=16, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(16),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2))
-        self.layer2 = nn.Sequential(
-            nn.Conv2d(16, 32, kernel_size=5, stride=1, padding=2),
-            nn.BatchNorm2d(32),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2))
-        self.fc = nn.Linear(24 * 24 * 32, num_classes)  # 注意参数的调整，神经网络的参数要保持相同结构?
-
-    def forward(self, x):
-        # x = x.view(x.size(0), -1)
-        out = self.layer1(x)
-        out = self.layer2(out)
-        out = out.reshape(out.size(0), -1)
-        out = self.fc(out)
-        return out
 
 
 def default_loader(path):
@@ -125,4 +92,4 @@ def run():
     write_submit()
 
 
-run()
+run()  # 程序运行

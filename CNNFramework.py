@@ -1,17 +1,13 @@
 #!/usr/bin/python
-import torch
+'''
+CNN的整体网络框架结构
+'''
 import torch.nn as nn
-from torchvision import transforms, utils
-from torch.utils.data import Dataset, DataLoader
-import matplotlib.pyplot as plt
-from PIL import Image
-import numpy as np
-import time
 
 num_epochs = 100
 num_classes = 2
 batch_size = 100
-learning_rate = 0.0005
+learning_rate = 0.0001
 
 
 class ConvNet(nn.Module):
