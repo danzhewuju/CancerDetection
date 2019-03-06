@@ -14,7 +14,7 @@ from CNNFramework import *
 # device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 test_path = "dataset/test"  # 验证集的位置
-mode_path = "model/model.ckpt"  # 训练好的模型的文件位置
+mode_path = "model/model-0.0005-1551707325-93.6075.ckpt"  # 训练好的模型的文件位置
 save_path = "./dataset/submit.csv"  # 生成需要提交的文件
 write_path = "./result/result.csv"
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -63,7 +63,8 @@ def run():
     test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=True)  # 标准数据集的构造?
 
     net_r = ConvNet(num_classes=num_classes).to(device)  # 保持和之前的神经网络相同的结构特征?
-    net_r.load_state_dict(torch.load("model/model.ckpt"))
+    net_r.load_state_dict(torch.load(mode_path))
+    print("Loading {} model!".format(mode_path))
     names = []
     results = []
 

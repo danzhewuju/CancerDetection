@@ -3,24 +3,24 @@ Cancer Detection Project
 
 # Environments
 
-Python3.6
+**Python3.6**
 
-Pytorch 
+**Pytorch** 
 
 pip install pytorch
 
-Numpy
+**Numpy**
 
 pip install numpy
 
-Pandas 
+**Pandas** 
 
 pip install pandas
 
 # Running
 
-1.Running ./PreDataProcessing.py. You will get ./dataset/train_data_labels.txt
+1.Running ./PreDataProcessing.py. You will get ./dataset/train_data_labels.txt.
 
-2.Running ./CNN.py. ``
+2.Running ./CNN.py.
 
 3.Running ./ModelClassification.py
