@@ -1,29 +1,34 @@
 #!/usr/bin/python
 import pandas as pd
+import numpy as np
+
+import torchvision
+import torch
+import torchvision.transforms as transforms
 import os
 
 path_labels = "dataset/train_labels.csv"
 path_write = "dataset/train_data_labels.txt"
 
 
-def get_lables(path):  # 获取训练图片数据的labels
+def get_lables(path):                          #获取训练图片数据的labels
     data = pd.read_csv(path, sep=',')
     id_list = data['id']
     labels_list = data['label']
     dict_labels = dict(zip(id_list, labels_list))
-    return dict_labels  # 返回的是dict_labels 的映射关系
+    return dict_labels                         #返回的是dict_labels 的映射关系
 
 
-def write_image_labels(path_write, path_labels):  # 注意pytorch数据的加载方式，我们需要写成  “****.png 1” 这样的格式
+def write_image_labels(path_write, path_labels):        #注意pytorch数据的加载方式，我们需要写成  “****.png 1” 这样的格式
     index = 0
     dict_labels = get_lables(path_labels)
     f = open(path_write, 'w', encoding="UTF-8")
     for d in dict_labels.items():
         name = '.'.join([d[0], "tif"])
         name_pre = "dataset/train"
-        path_name = os.path.join(name_pre, name)  # 获得的完整路径
+        path_name = os.path.join(name_pre, name)  #获得的完整路径
         label = d[1]
-        result = path_name + " " + str(label) + "\n"
+        result = path_name+" "+str(label)+"\n"
         f.write(result)
         index += 1
         if index % 100 == 0:
@@ -39,3 +44,4 @@ def write_image_labels(path_write, path_labels):  # 注意pytorch数据的加载
 # read_img(path_image)
 
 write_image_labels(path_write, path_labels)
+

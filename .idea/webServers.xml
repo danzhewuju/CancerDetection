@@ -10,6 +10,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="8deaaeaf-f11f-4549-b0a3-5218d04341bf" name="lab3" url="http://58.198.176.69">
+        <fileTransfer host="58.198.176.69" port="22" rootFolder="/home/cbd109-3/Users/yh/Program/Python/tmp " accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>
