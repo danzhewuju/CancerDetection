@@ -83,7 +83,8 @@ def show_batch(imgs):
 #         plt.show()
 
 
-model = ConvNet(num_classes).to(device)
+model = VGGNet(num_classes=num_classes).to(device)
+print(model)
 # model = ConvNet(num_classes)
 # Loss and optimizer
 criterion = nn.CrossEntropyLoss()

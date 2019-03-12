@@ -10,11 +10,13 @@ import os
 from PIL import Image
 from submit_result import write_submit
 from CNNFramework import *
+from ModelLoad import *
 
 # device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 test_path = "dataset/test"  # 验证集的位置
-mode_path = "model/model-0.001-1552028978-95.7823.ckpt"  # 训练好的模型的文件位置
+mode_path = get_new_model("model") #获得最新的模板
+# mode_path = "model/model-0.001-1552037778-94.4984.ckpt"  # 训练好的模型的文件位置
 save_path = "./dataset/submit.csv"  # 生成需要提交的文件
 write_path = "./result/result.csv"
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -62,7 +64,7 @@ def run():
     test_data = MyDataLoader(test_path, transform=transforms.ToTensor())
     test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=True)  # 标准数据集的构造?
 
-    net_r = ConvNet(num_classes=num_classes).to(device)  # 保持和之前的神经网络相同的结构特征?
+    net_r = VGGNet(num_classes=num_classes).to(device)  # 保持和之前的神经网络相同的结构特征?
     net_r.load_state_dict(torch.load(mode_path))
     print("Loading {} model!".format(mode_path))
     names = []
