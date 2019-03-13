@@ -62,78 +62,84 @@ class MyDataset(Dataset):  # 重写dateset的相关类
         return len(self.imgs)
 
 
-imgs = DataSplit(path='./dataset/train_data_labels.txt', train_size=0.8)
-train_data = MyDataset(imgs.train_imgs, transform=transforms.ToTensor())  # 作为训练集
-test_data = MyDataset(imgs.test_imgs, transform=transforms.ToTensor())  # 作为测试集
-train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True)
-test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=True)
+def run():
+    start_time = time.time()
+    imgs = DataSplit(path='./dataset/train_data_labels.txt', train_size=0.8)
+    train_data = MyDataset(imgs.train_imgs, transform=transforms.ToTensor())  # 作为训练集
+    test_data = MyDataset(imgs.test_imgs, transform=transforms.ToTensor())  # 作为测试集
+    train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True)
+    test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=True)
+
+    def show_batch(imgs):
+        grid = utils.make_grid(imgs)
+        plt.imshow(grid.numpy().transpose((1, 2, 0)))
+        plt.title('Batch from dataloader')
+
+    # for i, (batch_x, batch_y) in enumerate(data_loader):
+    #     if(i<4):
+    #         print(i, batch_x.size(),batch_y.size())
+    #         show_batch(batch_x)
+    #         plt.axis('off')
+    #         plt.show()
+
+    model = VGGNet(num_classes=num_classes).to(device)
+    print(model)
+    # model = ConvNet(num_classes)
+    # Loss and optimizer
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+    # Train the model
+    total_step = len(train_loader)
+    for epoch in range(num_epochs):
+        for i, (images, labels) in enumerate(train_loader):
+            images = images.to(device)
+            labels = labels.to(device)
+
+            # images = images
+            # labels = labels
+
+            # Forward pass
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+            _, prediction = torch.max(outputs.data, 1)
+
+            # Backward and optimize
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            if (i + 1) % 100 == 0:
+                print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
+                      .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
+
+    # Test the model
+    Acc = 0.0
+    model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
+    with torch.no_grad():
+        correct = 0
+        total = 0
+        for images, labels in test_loader:
+            images = images.to(device)
+            labels = labels.to(device)
+            # images = images
+            # labels = labels
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+        print('Test Accuracy of the model on the {} test images: {} %'.format(imgs.test_imgs_length,
+                                                                              100 * correct / total))
+        Acc = 100 * correct / total
+
+    # Save the model checkpoint
+    timestamp = str(int(time.time()))
+    name = str("./model/model-{}-{}-{:.4f}.ckpt".format(learning_rate, timestamp, Acc))
+    torch.save(model.state_dict(), name)
+    end_time = time.time()
+    run_time = end_time - start_time
+    print("Running Time {.2lf}".format(run_time))
 
 
-def show_batch(imgs):
-    grid = utils.make_grid(imgs)
-    plt.imshow(grid.numpy().transpose((1, 2, 0)))
-    plt.title('Batch from dataloader')
-
-
-# for i, (batch_x, batch_y) in enumerate(data_loader):
-#     if(i<4):
-#         print(i, batch_x.size(),batch_y.size())
-#         show_batch(batch_x)
-#         plt.axis('off')
-#         plt.show()
-
-
-model = VGGNet(num_classes=num_classes).to(device)
-print(model)
-# model = ConvNet(num_classes)
-# Loss and optimizer
-criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-
-# Train the model
-total_step = len(train_loader)
-for epoch in range(num_epochs):
-    for i, (images, labels) in enumerate(train_loader):
-        images = images.to(device)
-        labels = labels.to(device)
-
-        # images = images
-        # labels = labels
-
-        # Forward pass
-        outputs = model(images)
-        loss = criterion(outputs, labels)
-        _, prediction = torch.max(outputs.data, 1)
-
-        # Backward and optimize
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-
-        if (i + 1) % 100 == 0:
-            print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
-                  .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
-
-# Test the model
-Acc = 0.0
-model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
-with torch.no_grad():
-    correct = 0
-    total = 0
-    for images, labels in test_loader:
-        images = images.to(device)
-        labels = labels.to(device)
-        # images = images
-        # labels = labels
-        outputs = model(images)
-        _, predicted = torch.max(outputs.data, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
-
-    print('Test Accuracy of the model on the {} test images: {} %'.format(imgs.test_imgs_length, 100 * correct / total))
-    Acc = 100 * correct / total
-
-# Save the model checkpoint
-timestamp = str(int(time.time()))
-name = str("./model/model-{}-{}-{:.4f}.ckpt".format(learning_rate, timestamp, Acc))
-torch.save(model.state_dict(), name)
+run()

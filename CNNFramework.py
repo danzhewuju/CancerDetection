@@ -59,7 +59,7 @@ net_arch16 = [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512, 'M'
 
 # vgg19, 基本和 vgg16 相同, 只不过在后3个卷积段中, 每个都多了一个卷积层
 net_arch19 = [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 256, 'M', 512, 512, 512, 512, 'M', 512, 512, 512, 512, 'M5',
-              "FC1", "FC2", "FC"]  #VGG19的网络参数暂时有问题
+              "FC1", "FC2", "FC"]  # VGG19的网络参数暂时有问题
 
 
 class VGGNet(nn.Module):
@@ -69,7 +69,7 @@ class VGGNet(nn.Module):
         self.num_classes = num_classes
         layers = []
         in_channels = 3  # 初始化通道数
-        for arch in net_arch16:
+        for arch in net_arch19:
             if arch == 'M':
                 layers.append(nn.MaxPool2d(kernel_size=2, stride=2))
             elif arch == 'M5':

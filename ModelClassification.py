@@ -11,6 +11,7 @@ from PIL import Image
 from submit_result import write_submit
 from CNNFramework import *
 from ModelLoad import *
+import time
 
 # device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -61,6 +62,7 @@ class MyDataLoader(Dataset):
 
 
 def run():
+    start_time = time.time()
     test_data = MyDataLoader(test_path, transform=transforms.ToTensor())
     test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=True)  # 标准数据集的构造?
 
@@ -93,6 +95,9 @@ def run():
     fp.close()
     print("Successfully Write!!!")
     write_submit()
+    end_time = time.time()
+    run_time = end_time - start_time
+    print("Running Time {.2lf}".format(run_time))
 
 
 run()  # 程序运行
