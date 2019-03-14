@@ -7,8 +7,9 @@ from PIL import Image
 import numpy as np
 import time
 from CNNFramework import *
+from Restnet import *
 
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
 
 
 # Hyper parameters
@@ -63,8 +64,18 @@ class MyDataset(Dataset):  # 重写dateset的相关类
 
 
 def run():
+    # data_transforms = transforms.Compose([
+    #     # transforms.CenterCrop(32),
+    #     transforms.ToTensor(),
+    #     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    # ])
+    # data_transforms_test = transforms.Compose([
+    #     # transforms.CenterCrop(32),
+    #     transforms.ToTensor(),
+    #     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    # ])   #图像风格图像
     start_time = time.time()
-    imgs = DataSplit(path='./dataset/train_data_labels.txt', train_size=0.8)
+    imgs = DataSplit(path='./dataset/train_data_labels.txt', train_size=0.9)
     train_data = MyDataset(imgs.train_imgs, transform=transforms.ToTensor())  # 作为训练集
     test_data = MyDataset(imgs.test_imgs, transform=transforms.ToTensor())  # 作为测试集
     train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True)
@@ -82,7 +93,7 @@ def run():
     #         plt.axis('off')
     #         plt.show()
 
-    model = VGGNet(num_classes=num_classes).to(device)
+    model = ResNet(num_classes=num_classes).to(device)
     print(model)
     # model = ConvNet(num_classes)
     # Loss and optimizer
@@ -124,14 +135,14 @@ def run():
             labels = labels.to(device)
             # images = images
             # labels = labels
-            outputs = model(images)
+            outputs = model(images)  #直接获得模型的结果
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
         print('Test Accuracy of the model on the {} test images: {} %'.format(imgs.test_imgs_length,
-                                                                              100 * correct / total))
-        Acc = 100 * correct / total
+                                                                              batch_size * correct / total))
+        Acc = batch_size * correct / total
 
     # Save the model checkpoint
     timestamp = str(int(time.time()))
@@ -139,7 +150,7 @@ def run():
     torch.save(model.state_dict(), name)
     end_time = time.time()
     run_time = end_time - start_time
-    print("Running Time {.2lf}".format(run_time))
+    print("Running Time {:.2f}".format(run_time))
 
 
 run()

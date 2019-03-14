@@ -38,7 +38,7 @@ class ConvNet(nn.Module):
         )
         self.fc1 = nn.Linear(6 * 6 * 32, 32)
         self.fc2 = nn.Linear(32, 8)
-        self.fc3 = nn.Linear(8, num_classes)
+        self.fc3 = nn.Linear(8, num_classes)   #取决于最后的个数种类
 
     def forward(self, x):
         # x = x.view(x.size(0), -1)
@@ -46,7 +46,7 @@ class ConvNet(nn.Module):
         out = self.layer2(out)
         out = self.layer3(out)
         out = self.layer4(out)
-        out = out.reshape(out.size(0), -1)
+        out = out.reshape(out.size(0), -1)  # 这里面的-1代表的是自适应的意思。
         out = self.fc1(out)
         out = self.fc2(out)
         out = self.fc3(out)
@@ -63,7 +63,7 @@ net_arch19 = [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 256, 'M', 512, 512, 512
 
 
 class VGGNet(nn.Module):
-    def __init__(self, num_classes=num_classes):
+    def __init__(self, num_classes):
         # net_arch 即为上面定义的列表: net_arch16 或 net_arch19
         super(VGGNet, self).__init__()
         self.num_classes = num_classes
