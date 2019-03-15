@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 
-path = "./Drawing"  # 将最后的散点图保存的位置
+path = "./Drawing/"  # 将最后的散点图保存的位置
 
 
 def show_plt(accuracy, loss):  # 画出accuracy,loss的趋势图
@@ -24,6 +24,13 @@ def show_plt(accuracy, loss):  # 画出accuracy,loss的趋势图
     plt.plot(acc, label="Accuracy")
     plt.plot(loss, label="Loss")
     plt.legend(loc='upper right')
-    plt.savefig(name)
     plt.show()
+    plt.savefig(name)
+
+    print("Saved Image!")
     return True
+
+
+a = np.random.rand(100)
+b = np.random.rand(100)
+show_plt(a, b)

@@ -1,11 +1,7 @@
 import torch
-import torch.nn as nn
 from torchvision import transforms, utils
 from torch.utils.data import Dataset, DataLoader
-import matplotlib.pyplot as plt
 from PIL import Image
-import numpy as np
-import time
 from CNNFramework import *
 from Resnet import *
 from Drawing import *

@@ -17,8 +17,8 @@ from Resnet import *
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 test_path = "dataset/test"  # 验证集的位置
-# mode_path = get_new_model("model")  # 获得最新的模板
-mode_path = "model/model-0.0005-1552599033-98.0185.ckpt"  # 训练好的模型的文件位置
+mode_path = get_new_model("model")  # 获得最新的模板
+# mode_path = "model/model-0.0005-1552599033-98.0185.ckpt"  # 训练好的模型的文件位置
 save_path = "./dataset/submit.csv"  # 生成需要提交的文件
 write_path = "./result/result.csv"
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')

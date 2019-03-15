@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jul  7 12:13:58 2018
-
-@author: Duan
+ResNet网络架构
+RESNet 参数比较少同时效果比VGG更好
 """
 
 from torch import nn
