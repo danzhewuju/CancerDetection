@@ -131,9 +131,8 @@ def run():
                 print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Accuracy: {:.4f}'
                       .format(epoch + 1, num_epochs, i + 1, total_step, loss.item(), correct / batch_size))
                 Acc_h.append(correct / batch_size)
-                Loss_h.append(loss.item)
+                Loss_h.append(loss.item())
 
-    show_plt(Acc_h, Loss_h)
     # Test the model
     Acc = 0.0
     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
@@ -161,6 +160,7 @@ def run():
     end_time = time.time()
     run_time = end_time - start_time
     print("Running Time {:.2f}".format(run_time))
+    show_plt(Acc_h, Loss_h)
 
 
 run()
