@@ -7,13 +7,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 
+path = "./Drawing"  # 将最后的散点图保存的位置
+
 
 def show_plt(accuracy, loss):  # 画出accuracy,loss的趋势图
     time_stamp = time.time()
     time_struct = time.localtime(time_stamp)
     time_stamp = "Accuracy-Loss%d-%d-%d %d:%d:%d" % (time_struct[0], time_struct[1], time_struct[2],
-                                        time_struct[3], time_struct[4], time_struct[5])
-    name = "./model/"+time_stamp+".png"
+                                                     time_struct[3], time_struct[4], time_struct[5])
+    name = path + time_stamp + ".png"
     acc = np.asarray(accuracy)
     loss = np.asarray(loss)
     plt.title("Accuracy&&Loss")
