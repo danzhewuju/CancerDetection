@@ -5,9 +5,9 @@ Cancer Detection Project
 
 **Python3.6**
 
-**Pytorch** 
+**Pytorch(torch, torchvision)** 
 
-pip install pytorch
+pip install torch torchvision
 
 **Numpy**
 

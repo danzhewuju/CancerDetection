@@ -9,7 +9,7 @@ from torch import nn
 from torch.nn import functional as F
 import torch as t
 
-num_epochs = 10
+num_epochs = 20
 num_classes = 2
 batch_size = 100
 learning_rate = 0.0005
