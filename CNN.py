@@ -8,6 +8,7 @@ import numpy as np
 import time
 from CNNFramework import *
 from Resnet import *
+from Drawing import *
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -103,6 +104,8 @@ def run():
     # Train the model
 
     total_step = len(train_loader)
+    Acc_h = []  # 用于画图的数据记录
+    Loss_h = []  # 用于画图的数据记录
     for epoch in range(num_epochs):
         for i, (images, labels) in enumerate(train_loader):
             correct = 0
@@ -126,8 +129,11 @@ def run():
 
             if (i + 1) % 100 == 0:
                 print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Accuracy: {:.4f}'
-                      .format(epoch + 1, num_epochs, i + 1, total_step, loss.item(), correct/batch_size))
+                      .format(epoch + 1, num_epochs, i + 1, total_step, loss.item(), correct / batch_size))
+                Acc_h.append(correct / batch_size)
+                Loss_h.append(loss.item)
 
+    show_plt(Acc_h, Loss_h)
     # Test the model
     Acc = 0.0
     model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)
@@ -139,7 +145,7 @@ def run():
             labels = labels.to(device)
             # images = images
             # labels = labels
-            outputs = model(images)  #直接获得模型的结果
+            outputs = model(images)  # 直接获得模型的结果
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()

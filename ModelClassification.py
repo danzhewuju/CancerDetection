@@ -17,8 +17,8 @@ from Resnet import *
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 test_path = "dataset/test"  # 验证集的位置
-mode_path = get_new_model("model")  # 获得最新的模板
-# mode_path = "model/model-0.0005-1552286205-95.5596.ckpt"  # 训练好的模型的文件位置
+# mode_path = get_new_model("model")  # 获得最新的模板
+mode_path = "model/model-0.0005-1552599033-98.0185.ckpt"  # 训练好的模型的文件位置
 save_path = "./dataset/submit.csv"  # 生成需要提交的文件
 write_path = "./result/result.csv"
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -82,10 +82,12 @@ def run():
             # images = images
             # labels = labels
             outputs = net_r(images)
-            _, predicted = torch.max(outputs.data, 1)  # 返回每一行中最大值的那个元素，且返回其索引（返回最大元素在这一行的列索引）
-            print(predicted)
-            for r in predicted:
-                results.append(r.cpu().numpy())
+            re = outputs.data[:, 1].cpu().numpy()
+            # _, predicted = torch.max(outputs.data, 1)  # 返回每一行中最大值的那个元素，且返回其索引（返回最大元素在这一行的列索引）
+            print(re)
+            for r in re:
+                results.append(r)
+                # results.append(r.cpu())
             for tmp in ids:
                 names.append(tmp)
     fp = open(write_path, 'w', encoding="UTF-8")
