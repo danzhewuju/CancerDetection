@@ -7,9 +7,9 @@ from PIL import Image
 import numpy as np
 import time
 from CNNFramework import *
-from Restnet import *
+from Resnet import *
 
-device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 
 # Hyper parameters
@@ -101,9 +101,11 @@ def run():
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
     # Train the model
+
     total_step = len(train_loader)
     for epoch in range(num_epochs):
         for i, (images, labels) in enumerate(train_loader):
+            correct = 0
             images = images.to(device)
             labels = labels.to(device)
 
@@ -120,9 +122,11 @@ def run():
             loss.backward()
             optimizer.step()
 
+            correct += (prediction == labels).sum().item()
+
             if (i + 1) % 100 == 0:
-                print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
-                      .format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
+                print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Accuracy: {:.4f}'
+                      .format(epoch + 1, num_epochs, i + 1, total_step, loss.item(), correct/batch_size))
 
     # Test the model
     Acc = 0.0

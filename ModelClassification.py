@@ -12,9 +12,9 @@ from submit_result import write_submit
 from CNNFramework import *
 from ModelLoad import *
 import time
-from Restnet import *
+from Resnet import *
 
-# device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 test_path = "dataset/test"  # 验证集的位置
 mode_path = get_new_model("model")  # 获得最新的模板
@@ -63,14 +63,8 @@ class MyDataLoader(Dataset):
 
 
 def run():
-    start_time = time.time()
-    data_transforms_test = transforms.Compose([
-        # transforms.CenterCrop(32),
-        transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-    ])  # 图像风格图像
-
-    test_data = MyDataLoader(test_path, transform=data_transforms_test)
+    start_time = time.time()  # 图像风格图像
+    test_data = MyDataLoader(test_path, transform=transforms.ToTensor())
     test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=True)  # 标准数据集的构造?
 
     net_r = ResNet(num_classes=num_classes).to(device)  # 保持和之前的神经网络相同的结构特征?
