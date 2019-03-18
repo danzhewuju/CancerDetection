@@ -49,7 +49,7 @@ class ResNet(nn.Module):
         self.pre = nn.Sequential(
             nn.Conv2d(3, 64, 7, 2, 3, bias=False),
             nn.BatchNorm2d(64),
-            nn.ReLU(inplace=True),
+            nn.ReLU(inplace=True),   #inplace=True时 不会返回数据， 当inplace=False时 会返回一个对象。
             nn.MaxPool2d(3, 2, 1)
         )
         # 重复的layer，分别有3,4,6,3个residual block
@@ -57,9 +57,10 @@ class ResNet(nn.Module):
         self.layer2 = self._make_layer(128, 256, 4, stride=2)
         self.layer3 = self._make_layer(256, 512, 6, stride=2)
         self.layer4 = self._make_layer(512, 512, 3, stride=2)
+        self.layer5 = self._make_layer(512, 1024, 3, stride=2)
 
         # 分类用的全连接
-        self.fc = nn.Linear(512, num_classes)
+        self.fc = nn.Linear(1024, num_classes)
 
     def _make_layer(self, inchannel, outchannel, block_num, stride=1):
         '''
@@ -73,7 +74,7 @@ class ResNet(nn.Module):
         layers.append(ResidualBlock(inchannel, outchannel, stride, shortcut))
 
         for i in range(1, block_num):
-            layers.append(ResidualBlock(outchannel, outchannel))
+            layers.append(ResidualBlock(outchannel, outchannel))     #再次构建两个相同的层
 
         return nn.Sequential(*layers)
 
@@ -84,6 +85,7 @@ class ResNet(nn.Module):
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
+        x = self.layer5(x)
 
         x = F.avg_pool2d(x, 7)
         x = x.view(x.size(0), -1)
