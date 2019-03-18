@@ -38,7 +38,7 @@ class ConvNet(nn.Module):
         )
         self.fc1 = nn.Linear(6 * 6 * 32, 32)
         self.fc2 = nn.Linear(32, 8)
-        self.fc3 = nn.Linear(8, num_classes)   #取决于最后的个数种类
+        self.fc3 = nn.Linear(8, num_classes)  # 取决于最后的个数种类
 
     def forward(self, x):
         # x = x.view(x.size(0), -1)
@@ -81,7 +81,8 @@ class VGGNet(nn.Module):
                 layers.append(nn.Conv2d(1024, 1024, kernel_size=1))
                 layers.append(nn.ReLU(inplace=True))
             elif arch == "FC":
-                layers.append(nn.Conv2d(1024, self.num_classes, kernel_size=1))
+                # layers.append(nn.Conv2d(1024, 1024, kernel_size=1))
+                layers.append(nn.Linear(6 * 6 * 1024, self.num_classes))
             else:
                 layers.append(nn.Conv2d(in_channels=in_channels, out_channels=arch, kernel_size=3, padding=1))
                 layers.append(nn.ReLU(inplace=True))
