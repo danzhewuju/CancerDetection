@@ -90,7 +90,7 @@ def run():
     #         plt.axis('off')
     #         plt.show()
 
-    model = ResNet(num_classes=num_classes).to(device)
+    model = VGGNet(num_classes=num_classes).to(device)
     print(model)
     # model = ConvNet(num_classes)
     # Loss and optimizer
@@ -102,9 +102,11 @@ def run():
     total_step = len(train_loader)
     Acc_h = []  # 用于画图的数据记录
     Loss_h = []  # 用于画图的数据记录
+    correct_h = []
+    loss_h = []
     for epoch in range(num_epochs):
         for i, (images, labels) in enumerate(train_loader):
-            correct = 0
+
             images = images.to(device)
             labels = labels.to(device)
 
@@ -121,13 +123,18 @@ def run():
             loss.backward()
             optimizer.step()
 
-            correct += (prediction == labels).sum().item()
+            correct = (prediction == labels).sum().item()
 
             if (i + 1) % 100 == 0:
                 print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Accuracy: {:.4f}'
                       .format(epoch + 1, num_epochs, i + 1, total_step, loss.item(), correct / batch_size))
-                Acc_h.append(correct / batch_size)
-                Loss_h.append(loss.item())
+            correct_h.append(correct / batch_size)
+            loss_h.append(loss.item())
+        Acc_h.append(np.mean(np.asarray(correct_h)))
+        Loss_h.append(np.mean(np.asarray(loss_h)))
+        correct_h.clear()
+        loss_h.clear()
+    show_plt(Acc_h, Loss_h)
 
     # Test the model
     Acc = 0.0
@@ -156,7 +163,6 @@ def run():
     end_time = time.time()
     run_time = end_time - start_time
     print("Running Time {:.2f}".format(run_time))
-    show_plt(Acc_h, Loss_h)
 
 
 run()

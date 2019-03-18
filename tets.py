@@ -17,9 +17,8 @@ import torch
 #                                    time_struct.tm_min, time_struct.tm_sec)
 # print(time_str)
 
-t1 = torch.rand(1, 10)
-print(t1)
-t2 = torch.max(t1, 1)
-print(t2)
+a = np.random.rand(10)
+print(a)
+print(np.mean(a))
 
 

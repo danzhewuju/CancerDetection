@@ -24,13 +24,9 @@ def show_plt(accuracy, loss):  # 画出accuracy,loss的趋势图
     plt.plot(acc, label="Accuracy")
     plt.plot(loss, label="Loss")
     plt.legend(loc='upper right')
-    plt.show()
     plt.savefig(name)
+    plt.show()
 
     print("Saved Image!")
     return True
 
-
-a = np.random.rand(100)
-b = np.random.rand(100)
-show_plt(a, b)

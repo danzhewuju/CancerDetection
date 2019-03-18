@@ -4,10 +4,10 @@ CNN的整体网络框架结构
 '''
 import torch.nn as nn
 
-num_epochs = 100
+num_epochs = 10
 num_classes = 2
 batch_size = 100
-learning_rate = 0.0005
+learning_rate = 0.001
 
 
 class ConvNet(nn.Module):
