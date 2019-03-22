@@ -5,14 +5,12 @@
 import torch
 import glob
 from torch.utils.data import DataLoader, Dataset
-from torchvision import datasets, models, transforms
-import os
+from torchvision import transforms
 from PIL import Image
 from submit_result import write_submit
-from CNNFramework import *
 from ModelLoad import *
 import time
-from Resnet import *
+from model_cnn import *
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -67,7 +65,7 @@ def run():
     test_data = MyDataLoader(test_path, transform=transforms.ToTensor())
     test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=True)  # 标准数据集的构造?
 
-    net_r = ResNet(num_classes=num_classes).to(device)  # 保持和之前的神经网络相同的结构特征?
+    net_r = resnet101(num_classes=num_classes).to(device)  # 保持和之前的神经网络相同的结构特征?
     net_r.load_state_dict(torch.load(mode_path))
     print("Loading {} model!".format(mode_path))
     names = []

@@ -1,8 +1,4 @@
-import numpy as np
-import time
-import datetime
-import torch
-
+from resnet1 import *
 
 # a = np.random.randint(0, 100, 100)
 # a = 14.012354989
@@ -17,8 +13,5 @@ import torch
 #                                    time_struct.tm_min, time_struct.tm_sec)
 # print(time_str)
 
-a = np.random.rand(10)
-print(a)
-print(np.mean(a))
 
-
+model = resnet101()

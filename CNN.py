@@ -2,9 +2,9 @@ import torch
 from torchvision import transforms, utils
 from torch.utils.data import Dataset, DataLoader
 from PIL import Image
-from CNNFramework import *
-from Resnet import *
 from Drawing import *
+from model_cnn import *
+import torch.nn as nn
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -90,7 +90,7 @@ def run():
     #         plt.axis('off')
     #         plt.show()
 
-    model = ResNet(num_classes=num_classes).to(device)
+    model = resnet101(num_classes = num_classes).to(device)
     print(model)
     # model = ConvNet(num_classes)
     # Loss and optimizer
