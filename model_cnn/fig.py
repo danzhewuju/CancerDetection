@@ -1,5 +1,6 @@
-
-
+'''
+参数设置
+'''
 num_epochs = 10
 num_classes = 2
 batch_size = 100
