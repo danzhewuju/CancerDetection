@@ -12,7 +12,7 @@
       <paths name="lab2">
         <serverdata>
           <mappings>
-            <mapping deploy="/CancerDetection" local="$PROJECT_DIR$" />
+            <mapping deploy="/CancerDetection" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
