@@ -3,11 +3,7 @@
 CNN的整体网络框架结构
 '''
 import torch.nn as nn
-
-num_epochs = 10
-num_classes = 2
-batch_size = 100
-learning_rate = 0.001
+from .fig import *
 
 
 class ConvNet(nn.Module):
@@ -82,7 +78,8 @@ class VGGNet(nn.Module):
                 layers.append(nn.ReLU(inplace=True))
             elif arch == "FC":
                 # layers.append(nn.Conv2d(1024, 1024, kernel_size=1))
-                layers.append(nn.Linear(6 * 6 * 1024, self.num_classes))
+                layers.append(nn.MaxPool2d(kernel_size=2, stride=2))
+                layers.append(nn.Linear(3 * 3 * 1024, self.num_classes))
             else:
                 layers.append(nn.Conv2d(in_channels=in_channels, out_channels=arch, kernel_size=3, padding=1))
                 layers.append(nn.ReLU(inplace=True))

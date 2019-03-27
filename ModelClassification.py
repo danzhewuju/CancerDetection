@@ -65,7 +65,7 @@ def run():
     test_data = MyDataLoader(test_path, transform=transforms.ToTensor())
     test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=True)  # 标准数据集的构造?
 
-    net_r = resnet101(num_classes=num_classes).to(device)  # 保持和之前的神经网络相同的结构特征?
+    net_r = VGGNet(num_classes=num_classes).to(device)  # 保持和之前的神经网络相同的结构特征?
     net_r.load_state_dict(torch.load(mode_path))
     print("Loading {} model!".format(mode_path))
     names = []

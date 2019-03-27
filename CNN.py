@@ -61,16 +61,6 @@ class MyDataset(Dataset):  # 重写dateset的相关类
 
 
 def run():
-    # data_transforms = transforms.Compose([
-    #     # transforms.CenterCrop(32),
-    #     transforms.ToTensor(),
-    #     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-    # ])
-    # data_transforms_test = transforms.Compose([
-    #     # transforms.CenterCrop(32),
-    #     transforms.ToTensor(),
-    #     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-    # ])   #图像风格图像
     start_time = time.time()
     imgs = DataSplit(path='./dataset/train_data_labels.txt', train_size=0.9)
     train_data = MyDataset(imgs.train_imgs, transform=transforms.ToTensor())  # 作为训练集
@@ -83,17 +73,9 @@ def run():
         plt.imshow(grid.numpy().transpose((1, 2, 0)))
         plt.title('Batch from dataloader')
 
-    # for i, (batch_x, batch_y) in enumerate(data_loader):
-    #     if(i<4):
-    #         print(i, batch_x.size(),batch_y.size())
-    #         show_batch(batch_x)
-    #         plt.axis('off')
-    #         plt.show()
-
-    model = resnet101(num_classes = num_classes).to(device)
+    model = resnet101(num_classes=num_classes).to(device)
     print(model)
-    # model = ConvNet(num_classes)
-    # Loss and optimizer
+
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
