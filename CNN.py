@@ -135,7 +135,7 @@ def run():
             correct += (predicted == labels).sum().item()
 
         print('Test Accuracy of the model on the {} test images: {} %'.format(imgs.test_imgs_length,
-                                                                              batch_size * correct / total))
+                                                                              100 * correct / total))
         Acc = batch_size * correct / total
 
     # Save the model checkpoint
