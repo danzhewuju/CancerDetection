@@ -28,3 +28,7 @@ pip install pandas
 # Result
 
 ![Accuracy&Loss](https://github.com/danzhewuju/CancerDetection/blob/master/Drawing/Accuracy-Loss2019-3-28%2017_18_53.png)
+
+# reference
+
+our result get TOP 3% in the competition of Kaggle.
