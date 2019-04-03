@@ -27,4 +27,4 @@ pip install pandas
 
 # Result
 
-![Accuracy&Loss](https://github.com/danzhewuju/CancerDetection/Drawing/Drawing/Accuracy-Loss2019-3-28 17_18_53.png)
+![Accuracy&Loss](https://github.com/danzhewuju/CancerDetection/blob/master/Drawing/Accuracy-Loss2019-3-28%2017_18_53.png)
