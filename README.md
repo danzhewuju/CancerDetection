@@ -24,3 +24,7 @@ pip install pandas
 2.Running ./CNN.py.
 
 3.Running ./ModelClassification.py
+
+# Result
+
+![Accuracy&Loss](https://github.com/danzhewuju/CancerDetection/Drawing/Drawing/Accuracy-Loss2019-3-28 17_18_53.png)
