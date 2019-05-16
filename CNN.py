@@ -136,7 +136,7 @@ def run():
 
         print('Test Accuracy of the model on the {} test images: {} %'.format(imgs.test_imgs_length,
                                                                               100 * correct / total))
-        Acc = batch_size * correct / total
+        Acc = 100 * correct / total
 
     # Save the model checkpoint
     timestamp = str(int(time.time()))
